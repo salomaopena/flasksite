@@ -1,8 +1,8 @@
-from main import app, database
-from app.models import Usuario, Post
+from App import app, database
+from App.models import Usuario, Post
 
-# with app.app_context():
-#     database.create_all()
+with app.app_context():
+    database.create_all()
 #with app.app_context():
     
     # usuario = Usuario(

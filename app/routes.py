@@ -1,8 +1,8 @@
 
 from flask import render_template, url_for, request, flash, redirect
-from app import app
-from app.forms import FormLogin, FormCriarConta
-from app.models import Usuario, Post
+from App import app, database, bcrypt
+from App.forms import FormLogin, FormCriarConta
+from App.models import Usuario, Post
 
 lista_usuarios = ['Pena','Salomão','Nilo','Bento']
 
@@ -31,6 +31,17 @@ def login():
         return redirect(url_for('home'))
     if form_criaconta.validate_on_submit() and "botao_submit_criarconta" in request.form:
         # exibir mensagem de criação de conta bem sucedida
+        # criar um usuário
+        palavra_passe_crypt = bcrypt.generate_password_hash(form_criaconta.palavra_passe.data)
+        usuario = Usuario(
+            username=form_criaconta.username.data,
+            email=form_criaconta.email.data, 
+            palavra_passe=palavra_passe_crypt,
+            )
+        database.session.add(usuario)
+        database.session.commit()
+        # adicionar sessão no banco
+        # fazer o commit
         flash(f"Conta criada para o form criar conta para o email: {form_criaconta.email.data}")
         return redirect(url_for("home"))
     return render_template('login.html', form_login=form_login, form_criaconta=form_criaconta)
