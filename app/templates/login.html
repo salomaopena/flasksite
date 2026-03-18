@@ -2,7 +2,7 @@
 
 <div class="container py-4">
   <h1>Faça login ou crie sua conta para continuar</h1>
-  <hr />
+  <hr>
   <div class="row">
     <div class="col">
       <legend>Login</legend>
@@ -82,7 +82,8 @@
               form_criaconta.palavra_passe.errors %}
               {{form_criaconta.palavra_passe(class="form-control is-invalid")}}
               <div class="invalid-feedback">
-                {% for erro in form_criaconta.palavra_passe.errors%} {{erro}} {% endfor %}
+                {% for erro in form_criaconta.palavra_passe.errors%} {{erro}} {%
+                endfor %}
               </div>
               {% else %} {{form_criaconta.palavra_passe(class="form-control")}}
               {% endif %}
@@ -90,7 +91,8 @@
           </div>
           <div class="mb-3">
             <div class="form-group">
-              {{form_criaconta.conf_palavra_passe.label(class="form-label")}} {% if form_criaconta.conf_palavra_passe.errors %}
+              {{form_criaconta.conf_palavra_passe.label(class="form-label")}} {%
+              if form_criaconta.conf_palavra_passe.errors %}
               {{form_criaconta.conf_palavra_passe(class="form-control
               is-invalid")}}
               <div class="invalid-feedback">

@@ -10,8 +10,8 @@ class FormCriarConta(FlaskForm):
     conf_palavra_passe= PasswordField("Confirmar Palavra-passe", validators=[DataRequired(), EqualTo("palavra_passe", message="A palavra-passe digitada não confere")])
     botao_submit_criarconta = SubmitField("Criar Conta")
     
-    def validate_email(self, email, extra_validators = None):
-        usuario = Usuario.query.filter_by(email=email.data).first_or_404()
+    def validate_email(self, email):
+        usuario = Usuario.query.filter_by(email=email.data).first()
         if usuario:
             raise ValidationError("E-mail já cadastrado. Cadastre-se com outro e-mail ou faça login para continuar")
     

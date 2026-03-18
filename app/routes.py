@@ -3,6 +3,7 @@ from flask import render_template, url_for, request, flash, redirect
 from App import app, database, bcrypt
 from App.forms import FormLogin, FormCriarConta
 from App.models import Usuario, Post
+from flask_login import login_user
 
 lista_usuarios = ['Pena','Salomão','Nilo','Bento']
 
@@ -26,9 +27,19 @@ def login():
     form_criaconta = FormCriarConta()
     
     if form_login.validate_on_submit() and "botao_submit_login" in request.form:
-        # exibir mensagem de logim bem sucedido
-        flash(f"Login efetuado com sucesso no email: {form_login.email.data}", "alert-success")
-        return redirect(url_for('home'))
+        
+        usuario = Usuario.query.filter_by(email=form_login.email.data).first()
+    
+        if usuario and bcrypt.check_password_hash(usuario.palavra_passe, form_login.palavra_passe.data):
+            login_user(usuario, remember=form_login.lembrar_dados.data)
+            # exibir mensagem de logim bem sucedido
+            flash(f"Login efetuado com sucesso no email: {form_login.email.data}", "alert-success")
+            return redirect(url_for('home'))
+        else:
+            flash(f"Falha ao fazer login. E-mail e/ou Senha incorretos", "alert-danger")
+        
+    
+    
     if form_criaconta.validate_on_submit() and "botao_submit_criarconta" in request.form:
         # exibir mensagem de criação de conta bem sucedida
         # criar um usuário
@@ -40,9 +51,8 @@ def login():
             )
         database.session.add(usuario)
         database.session.commit()
-        # adicionar sessão no banco
-        # fazer o commit
-        flash(f"Conta criada para o form criar conta para o email: {form_criaconta.email.data}")
+        
+        flash(f"Conta criada para o form criar conta para o email: {form_criaconta.email.data}","alert-success")
         return redirect(url_for("home"))
     return render_template('login.html', form_login=form_login, form_criaconta=form_criaconta)
 

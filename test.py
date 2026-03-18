@@ -1,8 +1,8 @@
 from App import app, database
 from App.models import Usuario, Post
 
-with app.app_context():
-    database.create_all()
+# with app.app_context():
+#     database.create_all()
 #with app.app_context():
     
     # usuario = Usuario(
@@ -40,6 +40,6 @@ with app.app_context():
     # for post in posts:
     #     print(f"Autor: {post.autor.username}, titulo: {post.titulo}, texto: {post.texto}")
     
-# with app.app_context():
-#     database.drop_all()
-#     database.create_all()
+with app.app_context():
+    database.drop_all()
+    database.create_all()
