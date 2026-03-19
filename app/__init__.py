@@ -12,7 +12,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flasksite.db'
 # criar a instancia do banco de dados
 database = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-login_mmanager = LoginManager(app);
+login_mmanager = LoginManager(app)
+login_mmanager.login_view = "login"
+login_mmanager.login_message_category = "alert-info"
+login_mmanager.login_message = "Acesso não autorizado. Por favor, faça login ou crie conta"
 
 # with app.app_context():
 #     database.create_all()
