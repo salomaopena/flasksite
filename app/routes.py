@@ -80,12 +80,22 @@ def perfil():
     return render_template("perfil.html", foto_perfil=foto_perfil)
 
 
-@app.route('/perfil/editar',methods=["GET", "POST"])
+# editar o perfil do usuário
+@app.route('/perfil/editar', methods=["GET", "POST"])
 @login_required
 def perfil_editar():
-    form_editar_perfil = FormEditarPerfil()
+    form = FormEditarPerfil()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        database.session.commit()
+        flash('Perfil atualizado com sucesso', "alert-success")
+        return redirect(url_for('perfil'))
+    elif request.method == "GET":
+        form.username.data = current_user.username
+        form.email.data = current_user.email
     foto_perfil = url_for("static", filename="images/profile/{}".format(current_user.foto_perfil))
-    return render_template('editar_perfil.html', foto_perfil=foto_perfil, form_editar_perfil = form_editar_perfil)
+    return render_template('editar_perfil.html', foto_perfil=foto_perfil, form=form)
 
 
 @app.route('/post/criar')
