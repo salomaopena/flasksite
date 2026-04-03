@@ -1,7 +1,42 @@
 {% extends "base.html" %} {% block body %}
 
-<div class="container">
-  <h1>Criar Post</h1>
+<div class="container py-4">
+  <hr />
+  <div class="row">
+    <div class="col">
+      <legend>Criar Post</legend>
+      <form method="POST" class="border rounded p-4 mt-2">
+        {{form.csrf_token}}
+        <fieldset>
+          <div class="mb-3">
+            <div class="form-group">
+              {{form.titulo.label(class="form-label")}} {% if
+              form.titulo.errors %} {{form.titulo(class="form-control
+              is-invalid")}}
+              <div class="invalid-feedback">
+                {% for erro in form.titulo.errors%} {{erro}} {% endfor %}
+              </div>
+              {% else %} {{form.titulo(class="form-control")}} {% endif %}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="form-group">
+              {{form.texto.label(class="form-label")}} {% if
+              form.texto.errors %} {{form.texto(class="form-control
+              is-invalid")}}
+              <div class="invalid-feedback">
+                {% for erro in form.texto.errors%} {{erro}} {% endfor %}
+              </div>
+              {% else %} {{form.texto(class="form-control")}} {% endif %}
+            </div>
+          </div>
+         
+        </fieldset>
+        {{form.botao_submit(class="btn btn-primary")}}
+      </form>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

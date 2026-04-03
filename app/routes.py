@@ -1,7 +1,7 @@
 
 from flask import render_template, url_for, request, flash, redirect
 from App import app, database, bcrypt
-from App.forms import FormLogin, FormCriarConta, FormEditarPerfil
+from App.forms import FormLogin, FormCriarConta, FormEditarPerfil, FormCriarPost
 from App.models import Usuario, Post
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -132,7 +132,14 @@ def perfil_editar():
     return render_template('editar_perfil.html', foto_perfil=foto_perfil, form=form)
 
 
-@app.route('/post/criar')
+@app.route('/post/criar',methods=["GET", "POST"])
 @login_required
 def post_criar():
-    return render_template("criar_post.html")
+    form = FormCriarPost()
+    if form.validate_on_submit():
+        post = Post(titulo=form.titulo.data, texto=form.texto.data, id_usuario=current_user.id)
+        database.session.add(post)
+        database.session.commit()
+        flash('Post criado com sucesso', 'alert-success')
+        return redirect(url_for('home'))
+    return render_template("criar_post.html", form=form)
